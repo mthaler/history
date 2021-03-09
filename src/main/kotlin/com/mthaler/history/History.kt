@@ -16,6 +16,9 @@ class History<T> : Iterable<T> {
         position += 1
     }
 
+    /**
+     * Indicates if undo is possible
+     */
     val canUndo: Boolean
         get() = position > 0
 
@@ -25,6 +28,9 @@ class History<T> : Iterable<T> {
         }
     }
 
+    /**
+     * Indicates if redo is possible
+     */
     val canRedo: Boolean
         get() = position < data.size
 
