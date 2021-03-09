@@ -50,6 +50,20 @@ class HistoryTest: StringSpec({
         it1.hasNext() shouldBe true
         it1.next() shouldBe "a"
         it1.hasNext() shouldBe false
+        val h = History("a", "b", "c")
+        h.toList() shouldBe listOf("a", "b", "c")
+        h.undo()
+        h.toList() shouldBe listOf("a", "b")
+        h.undo()
+        h.toList() shouldBe listOf("a")
+        h.undo()
+        h.toList() shouldBe emptyList()
+        h.redo()
+        h.toList() shouldBe listOf("a")
+        h.redo()
+        h.toList() shouldBe listOf("a", "b")
+        h.redo()
+        h.toList() shouldBe listOf("a", "b", "c")
     }
 
     "canUndo" {
