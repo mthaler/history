@@ -1,0 +1,95 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group 'com.mthaler'
+version '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'aparser'
+            from components.java
+            pom {
+                name = 'History'
+                description = 'A history class written in Kotlin'
+                url = 'https://github.com/mthaler/history'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'm_t'
+                        name = 'Michael Thaler'
+                        url = 'https://github.com/mthaler/'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/mthaler/history.git'
+                    developerConnection = 'scm:git:https://github.com/mthaler/history.git'
+                    url = 'https://github.com/mthaler/history'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = isReleaseVersion ? releaseRepo : snapshotRepo
+            credentials {
+                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+            }
+        }
+    }
+}
+
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+    testImplementation 'io.kotest:kotest-runner-junit5:4.3.2'
+    testImplementation 'io.kotest:kotest-assertions-core:4.3.2'
+}
