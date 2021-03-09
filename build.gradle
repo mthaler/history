@@ -32,7 +32,7 @@ ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'aparser'
+            artifactId = 'history'
             from components.java
             pom {
                 name = 'History'
