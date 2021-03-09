@@ -42,4 +42,15 @@ class HistoryTest: StringSpec({
         History("a").canUndo shouldBe true
         History("a", "b", "c").canUndo shouldBe true
     }
+
+    "undo" {
+        val h = History("a", "b", "c")
+        h.current shouldBe "c"
+        h.undo()
+        h.current shouldBe "b"
+        h.undo()
+        h.current shouldBe "a"
+        h.undo()
+        h.current shouldBe null
+    }
 })
