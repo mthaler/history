@@ -27,7 +27,16 @@ class HistoryTest: StringSpec({
     "past" {
         History<String>().past shouldBe emptyList()
         History("a").past shouldBe emptyList()
-        History("a", "b", "c").past shouldBe listOf("a", "b")
+        val h = History("a", "b", "c")
+        h.past shouldBe listOf("a", "b")
+        h.undo()
+        h.past shouldBe listOf("a")
+        h.undo()
+        h.past shouldBe emptyList()
+        h.redo()
+        h.past shouldBe listOf("a")
+        h.redo()
+        h.past shouldBe listOf("a", "b")
     }
 
     "iterator" {
