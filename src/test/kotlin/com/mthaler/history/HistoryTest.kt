@@ -87,4 +87,27 @@ class HistoryTest: StringSpec({
         h.undo()
         h.current shouldBe null
     }
+
+    "add" {
+        val h = History("a", "b", "c")
+        h.past shouldBe listOf("a", "b")
+        h.current shouldBe "c"
+        h.future shouldBe emptyList()
+        h.add("d")
+        h.past shouldBe listOf("a", "b", "c")
+        h.current shouldBe "d"
+        h.future shouldBe emptyList()
+        h.undo()
+        h.past shouldBe listOf("a", "b")
+        h.current shouldBe "c"
+        h.future shouldBe listOf("d")
+        h.undo()
+        h.past shouldBe listOf("a")
+        h.current shouldBe "b"
+        h.future shouldBe listOf("c", "d")
+        h.add("e")
+        h.past shouldBe listOf("a", "b")
+        h.current shouldBe "e"
+        h.future shouldBe emptyList()
+    }
 })
