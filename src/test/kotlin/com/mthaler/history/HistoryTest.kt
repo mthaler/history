@@ -24,6 +24,12 @@ class HistoryTest: StringSpec({
         History("a", "b", "c").current shouldBe "c"
     }
 
+    "past" {
+        History<String>().past shouldBe emptyList()
+        History("a").past shouldBe emptyList()
+        History("a", "b", "c").past shouldBe listOf("a", "b")
+    }
+
     "iterator" {
         val it0 = History<String>().iterator()
         it0.hasNext() shouldBe false

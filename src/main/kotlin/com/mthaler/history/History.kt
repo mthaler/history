@@ -52,6 +52,15 @@ class History<T> : Iterable<T> {
         }
     }
 
+    val past: List<T>
+        get() {
+            if (currentSize < 2) {
+                return emptyList()
+            } else {
+                return data.subList(0, position - 1)
+            }
+        }
+
     /**
      * Returns a boolean indicating if the history is empty
      *
