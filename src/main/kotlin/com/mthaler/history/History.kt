@@ -1,13 +1,9 @@
 package com.mthaler.history
 
-class History<T> {
+class History<T> : Iterable<T> {
 
     private val data = ArrayList<T>()
     private var position = 0
-
-    fun iterator(): Iterator<T> {
-        TODO("Not yet implemented")
-    }
 
     fun add(element: T) {
         if (position < data.size) {
@@ -41,8 +37,13 @@ class History<T> {
     /**
      * Current element or null if the history is empty
      */
-    fun current(): T? {
-        TODO("Not yet implemented")
+    val current: T?
+        get() {
+        if (currentSize > 0) {
+            return data[position - 1]
+        } else {
+            return null
+        }
     }
 
     /**
@@ -57,6 +58,25 @@ class History<T> {
      */
     val currentSize: Int
         get() = position
+
+
+    override fun iterator(): Iterator<T> {
+        return object: Iterator<T> {
+            private var pos = 0
+
+            override fun hasNext(): Boolean = pos < position
+
+            override fun next(): T {
+                if (!hasNext()) {
+                    throw NoSuchElementException()
+                } else {
+                    val result = data[pos]
+                    pos++
+                    return result
+                }
+            }
+        }
+    }
 
     companion object {
 

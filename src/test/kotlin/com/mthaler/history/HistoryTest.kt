@@ -1,5 +1,6 @@
 package com.mthaler.history
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
@@ -15,5 +16,24 @@ class HistoryTest: StringSpec({
         History<String>().currentSize shouldBe 0
         History("a").currentSize shouldBe 1
         History("a", "b", "c").currentSize shouldBe 3
+    }
+
+    "current" {
+        History<String>().current shouldBe null
+        History("a").current shouldBe "a"
+        History("a", "b", "c").current shouldBe "c"
+    }
+
+    "iterator" {
+        val it0 = History<String>().iterator()
+        it0.hasNext() shouldBe false
+        shouldThrow<NoSuchElementException> {
+            it0.next()
+        }
+
+        val it1 = History("a").iterator()
+        it1.hasNext() shouldBe true
+        it1.next() shouldBe "a"
+        it1.hasNext() shouldBe false
     }
 })
