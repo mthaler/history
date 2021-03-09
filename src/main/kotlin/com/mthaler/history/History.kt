@@ -45,7 +45,7 @@ class History<T> : Iterable<T> {
      */
     val current: T?
         get() {
-        if (currentSize > 0) {
+        if (position > 0) {
             return data[position - 1]
         } else {
             return null
@@ -54,25 +54,12 @@ class History<T> : Iterable<T> {
 
     val past: List<T>
         get() {
-            if (currentSize < 2) {
+            if (position < 2) {
                 return emptyList()
             } else {
                 return data.subList(0, position - 1)
             }
         }
-
-    /**
-     * Returns a boolean indicating if the history is empty
-     *
-     * @return boolean indicating if history is empty
-     */
-    fun isEmpty(): Boolean = position == 0
-
-    /**
-     * Current size of the history
-     */
-    val currentSize: Int
-        get() = position
 
 
     /**

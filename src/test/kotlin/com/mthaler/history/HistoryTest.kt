@@ -6,18 +6,6 @@ import io.kotest.matchers.shouldBe
 
 class HistoryTest: StringSpec({
 
-    "isEmpty" {
-        History<String>().isEmpty() shouldBe true
-        History("a").isEmpty() shouldBe false
-        History("a", "b", "c").isEmpty() shouldBe false
-    }
-
-    "currentSize" {
-        History<String>().currentSize shouldBe 0
-        History("a").currentSize shouldBe 1
-        History("a", "b", "c").currentSize shouldBe 3
-    }
-
     "current" {
         History<String>().current shouldBe null
         History("a").current shouldBe "a"
