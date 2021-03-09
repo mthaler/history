@@ -60,6 +60,11 @@ class History<T> : Iterable<T> {
         get() = position
 
 
+    /**
+     * Returns an iterator that iterates over the history. The iterator is only valid until the history is modified!
+     *
+     * @return iterator
+     */
     override fun iterator(): Iterator<T> {
         return object: Iterator<T> {
             private var pos = 0
