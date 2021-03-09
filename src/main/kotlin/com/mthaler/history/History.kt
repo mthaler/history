@@ -1,48 +1,44 @@
 package com.mthaler.history
 
-class History<T>: List<T> {
+class History<T> {
 
     private val data = ArrayList<T>()
     private var position = 0
 
-    override val size: Int
-        get() = TODO("Not yet implemented")
-
-    override fun contains(element: T): Boolean {
+    fun iterator(): Iterator<T> {
         TODO("Not yet implemented")
     }
 
-    override fun containsAll(elements: Collection<T>): Boolean {
-        TODO("Not yet implemented")
+    fun add(element: T) {
+        if (position < data.size) {
+            val s = data.size
+            if (s > position) {
+                data.subList(position, s).clear()
+            }
+        }
+        data.add(element)
+        position += 1
     }
 
-    override fun get(index: Int): T {
-        TODO("Not yet implemented")
+    val canUndo: Boolean
+        get() = position > 0
+
+    fun undo() {
+        if (canUndo) {
+            position -= 1
+        }
     }
 
-    override fun indexOf(element: T): Int {
-        TODO("Not yet implemented")
+    val canRedo: Boolean
+        get() = position < data.size
+
+    fun redo() {
+        if (canRedo) {
+            position += 1
+        }
     }
 
-    override fun isEmpty(): Boolean = size == 0
-
-    override fun iterator(): Iterator<T> {
-        TODO("Not yet implemented")
-    }
-
-    override fun lastIndexOf(element: T): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun listIterator(): ListIterator<T> {
-        TODO("Not yet implemented")
-    }
-
-    override fun listIterator(index: Int): ListIterator<T> {
-        TODO("Not yet implemented")
-    }
-
-    override fun subList(fromIndex: Int, toIndex: Int): List<T> {
+    fun current(): T? {
         TODO("Not yet implemented")
     }
 }
