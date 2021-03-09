@@ -36,4 +36,10 @@ class HistoryTest: StringSpec({
         it1.next() shouldBe "a"
         it1.hasNext() shouldBe false
     }
+
+    "canUndo" {
+        History<String>().canUndo shouldBe false
+        History("a").canUndo shouldBe true
+        History("a", "b", "c").canUndo shouldBe true
+    }
 })
