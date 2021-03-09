@@ -61,6 +61,14 @@ class History<T> : Iterable<T> {
             }
         }
 
+    val future: List<T>
+        get() {
+            if (position < data.size) {
+                return data.subList(position, data.size)
+            } else {
+                return emptyList()
+            }
+        }
 
     /**
      * Returns an iterator that iterates over the history. The iterator is only valid until the history is modified!
