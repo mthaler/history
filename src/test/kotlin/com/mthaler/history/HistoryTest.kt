@@ -110,4 +110,29 @@ class HistoryTest: StringSpec({
         h.current shouldBe "e"
         h.future shouldBe emptyList()
     }
+
+    "addMaximumSize" {
+        val h0 = History<String>(maximumSize = 3)
+        h0.add("a")
+        h0.toList() shouldBe listOf("a")
+        h0.add("b")
+        h0.toList() shouldBe listOf("a", "b")
+        h0.add("c")
+        h0.toList() shouldBe listOf("a", "b", "c")
+        h0.add("d")
+        h0.toList() shouldBe listOf("b", "c", "d")
+        h0.add("e")
+        h0.toList() shouldBe listOf("c", "d", "e")
+        val h1 = History<String>(maximumSize = 3, removeSize = 2)
+        h1.add("a")
+        h1.toList() shouldBe listOf("a")
+        h1.add("b")
+        h1.toList() shouldBe listOf("a", "b")
+        h1.add("c")
+        h1.toList() shouldBe listOf("a", "b", "c")
+        h1.add("d")
+        h1.toList() shouldBe listOf("a", "b", "c", "d")
+        h1.add("e")
+        h1.toList() shouldBe listOf("c", "d", "e")
+    }
 })

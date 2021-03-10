@@ -22,3 +22,4 @@ fun <T> ArrayList<T>.removeAtStart(n: Int) {
     val to = min(n, size)
     this.subList(0, to).clear()
 }
+
