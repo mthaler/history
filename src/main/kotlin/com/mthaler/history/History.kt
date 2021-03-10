@@ -2,7 +2,7 @@ package com.mthaler.history
 
 import com.mthaler.history.utils.truncate
 
-class History<T>(val maximumSize: Int = Int.MAX_VALUE) : Iterable<T> {
+class History<T>(val maximumSize: Int = Int.MAX_VALUE, removeSize: Int = 1) : Iterable<T> {
 
     private val data = ArrayList<T>()
     private var position = 0
