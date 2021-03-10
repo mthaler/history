@@ -4,6 +4,7 @@ class History<T> : Iterable<T> {
 
     private val data = ArrayList<T>()
     private var position = 0
+    private var removalListener: RemovalListener<T>? = null
 
     fun add(element: T) {
         if (position < data.size) {
@@ -91,6 +92,10 @@ class History<T> : Iterable<T> {
                 }
             }
         }
+    }
+
+    fun setRemovalListener(removalListener: RemovalListener<T>?) {
+        this.removalListener = removalListener
     }
 
     companion object {
