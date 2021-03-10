@@ -23,3 +23,20 @@ fun <T> ArrayList<T>.removeAtStart(n: Int) {
     this.subList(0, to).clear()
 }
 
+/**
+ * Returns a copy of the first n elements at the start of the list
+ */
+fun <T> ArrayList<T>.elementsAtStart(n: Int): List<T> {
+    val to = min(n, size)
+    if (to == 0) {
+        return emptyList()
+    } else {
+        val result = ArrayList<T>(to)
+        var i = 0
+        while (i < to) {
+            result.add(get(i))
+            i += 1
+        }
+        return result
+    }
+}
