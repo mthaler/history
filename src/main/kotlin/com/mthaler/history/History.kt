@@ -1,5 +1,7 @@
 package com.mthaler.history
 
+import com.mthaler.history.utils.truncate
+
 class History<T>(val maximumSize: Int = Int.MAX_VALUE) : Iterable<T> {
 
     private val data = ArrayList<T>()
@@ -8,10 +10,7 @@ class History<T>(val maximumSize: Int = Int.MAX_VALUE) : Iterable<T> {
 
     fun add(element: T) {
         if (position < data.size) {
-            val s = data.size
-            if (s > position) {
-                data.subList(position, s).clear()
-            }
+            data.truncate(position)
         }
         data.add(element)
         position += 1
