@@ -135,4 +135,47 @@ class HistoryTest: StringSpec({
         h1.add("e")
         h1.toList() shouldBe listOf("c", "d", "e")
     }
+
+    "addRemovalListener" {
+        var removed: List<String> = emptyList()
+        val h0 = History<String>(maximumSize = 3)
+        h0.setRemovalListener {
+            removed = it
+        }
+        h0.add("a")
+        h0.toList() shouldBe listOf("a")
+        removed shouldBe emptyList()
+        h0.add("b")
+        h0.toList() shouldBe listOf("a", "b")
+        removed shouldBe emptyList()
+        h0.add("c")
+        h0.toList() shouldBe listOf("a", "b", "c")
+        removed shouldBe emptyList()
+        h0.add("d")
+        h0.toList() shouldBe listOf("b", "c", "d")
+        removed shouldBe listOf("a")
+        h0.add("e")
+        h0.toList() shouldBe listOf("c", "d", "e")
+        removed shouldBe listOf("b")
+        removed = emptyList()
+        val h1 = History<String>(maximumSize = 3, removeSize = 2)
+        h1.setRemovalListener {
+            removed = it
+        }
+        h1.add("a")
+        h1.toList() shouldBe listOf("a")
+        removed shouldBe emptyList()
+        h1.add("b")
+        h1.toList() shouldBe listOf("a", "b")
+        removed shouldBe emptyList()
+        h1.add("c")
+        h1.toList() shouldBe listOf("a", "b", "c")
+        removed shouldBe emptyList()
+        h1.add("d")
+        h1.toList() shouldBe listOf("a", "b", "c", "d")
+        removed shouldBe emptyList()
+        h1.add("e")
+        h1.toList() shouldBe listOf("c", "d", "e")
+        removed shouldBe listOf("a", "b")
+    }
 })

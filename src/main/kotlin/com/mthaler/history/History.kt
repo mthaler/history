@@ -12,7 +12,7 @@ class History<T>(val maximumSize: Long = Int.MAX_VALUE.toLong(), val removeSize:
 
     fun add(element: T) {
         if (data.size + 1 >= maximumSize + removeSize) {
-            removalListener?.let { 
+            removalListener?.let {
                 val toRemove = data.elementsAtStart(removeSize)
                 it.historyRemoved(toRemove)
             }
