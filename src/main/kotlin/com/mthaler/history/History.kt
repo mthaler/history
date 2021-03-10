@@ -1,6 +1,6 @@
 package com.mthaler.history
 
-class History<T> : Iterable<T> {
+class History<T>(val maximumSize: Int = Int.MAX_VALUE) : Iterable<T> {
 
     private val data = ArrayList<T>()
     private var position = 0
