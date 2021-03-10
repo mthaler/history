@@ -1,5 +1,6 @@
 package com.mthaler.history
 
+import com.mthaler.history.utils.elementsAtStart
 import com.mthaler.history.utils.removeAtStart
 import com.mthaler.history.utils.truncate
 
@@ -11,6 +12,10 @@ class History<T>(val maximumSize: Long = Int.MAX_VALUE.toLong(), val removeSize:
 
     fun add(element: T) {
         if (data.size + 1 >= maximumSize + removeSize) {
+            removalListener?.let { 
+                val toRemove = data.elementsAtStart(removeSize)
+                it.historyRemoved(toRemove)
+            }
             data.removeAtStart(removeSize)
             position -= removeSize
         }
