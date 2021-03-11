@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
     id 'maven-publish'
     id 'signing'
+    id 'io.gitlab.arturbosch.detekt' version '1.16.0'
 }
 
 group 'com.mthaler'
@@ -10,6 +11,13 @@ version '0.2'
 
 repositories {
     mavenCentral()
+    jcenter {
+        content {
+            // just allow to include kotlinx projects
+            // detekt needs 'kotlinx-html' for the html report
+            includeGroup "org.jetbrains.kotlinx"
+        }
+    }
 }
 
 test {
@@ -73,7 +81,6 @@ publishing {
     }
 }
 
-
 signing {
     sign publishing.publications.mavenJava
 }
@@ -87,6 +94,22 @@ javadoc {
         options.addBooleanOption('html5', true)
     }
 }
+
+detekt {
+    buildUponDefaultConfig = true // preconfigure defaults
+    allRules = false // activate all available (even unstable) rules.
+    config = files("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+    baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
+
+    reports {
+        html.enabled = true // observe findings in your browser with structure and code snippets
+        xml.enabled = true // checkstyle like format mainly for integrations like Jenkins
+        txt.enabled = true // similar to the console output, contains issue signature to manually edit baseline files
+        sarif.enabled = true // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with Github Code Scanning
+    }
+}
+
+tasks.detekt.jvmTarget = "1.8"
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
