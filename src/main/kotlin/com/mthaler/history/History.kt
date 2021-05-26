@@ -4,7 +4,7 @@ import com.mthaler.history.utils.elementsAtStart
 import com.mthaler.history.utils.removeAtStart
 import com.mthaler.history.utils.truncate
 
-class History<T>(val maximumSize: Long = Int.MAX_VALUE.toLong(), val removeSize: Int = 1) : Iterable<T> {
+class History<T>(private var maximumSize: Long = Int.MAX_VALUE.toLong(), val removeSize: Int = 1) : Iterable<T> {
 
     private val data = ArrayList<T>()
     private var position = 0
@@ -105,6 +105,22 @@ class History<T>(val maximumSize: Long = Int.MAX_VALUE.toLong(), val removeSize:
 
     fun setRemovalListener(removalListener: RemovalListener<T>?) {
         this.removalListener = removalListener
+    }
+
+    fun setMaximumSize(maximumSize: Long) {
+        this.maximumSize = maximumSize
+        if (this.maximumSize < data.size) {
+            var newPos = position - (data.size - this.maximumSize)
+            if (newPos < 0) {
+                newPos = 0
+            }
+            this.position = newPos.toInt()
+            removalListener?.let {
+                val toRemove = data.elementsAtStart(data.size - this.maximumSize.toInt())
+                it.historyRemoved(toRemove)
+            }
+            data.removeAtStart(data.size - this.maximumSize.toInt())
+        }
     }
 
     companion object {

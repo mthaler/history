@@ -178,4 +178,58 @@ class HistoryTest: StringSpec({
         h1.toList() shouldBe listOf("c", "d", "e")
         removed shouldBe listOf("a", "b")
     }
+
+    "setMaximumSize" {
+        val h0 = History<String>(maximumSize = 5)
+        h0.add("a")
+        h0.add("b")
+        h0.add("c")
+        h0.add("d")
+        h0.add("e")
+        h0.toList() shouldBe listOf("a", "b", "c", "d", "e")
+        h0.current shouldBe "e"
+        h0.setMaximumSize(3)
+        h0.toList() shouldBe listOf("c", "d", "e")
+        h0.current shouldBe "e"
+        val h1 = History<String>(maximumSize = 5)
+        h1.add("a")
+        h1.add("b")
+        h1.add("c")
+        h1.add("d")
+        h1.add("e")
+        h1.toList() shouldBe listOf("a", "b", "c", "d", "e")
+        h1.undo()
+        h1.toList() shouldBe listOf("a", "b", "c", "d")
+        h1.current shouldBe "d"
+        h1.setMaximumSize(3)
+        h1.toList() shouldBe listOf("c", "d")
+        h1.current shouldBe "d"
+        h1.redo()
+        h1.toList() shouldBe listOf("c", "d", "e")
+        h1.current shouldBe "e"
+        val h2 = History<String>(maximumSize = 5)
+        h2.add("a")
+        h2.add("b")
+        h2.add("c")
+        h2.add("d")
+        h2.add("e")
+        h2.toList() shouldBe listOf("a", "b", "c", "d", "e")
+        h2.undo()
+        h2.undo()
+        h2.undo()
+        h2.toList() shouldBe listOf("a", "b")
+        h2.current shouldBe "b"
+        h2.setMaximumSize(3)
+        h2.toList() shouldBe emptyList()
+        h2.current shouldBe null
+        h2.redo()
+        h2.toList() shouldBe listOf("c")
+        h2.current shouldBe "c"
+        h2.redo()
+        h2.toList() shouldBe listOf("c", "d")
+        h2.current shouldBe "d"
+        h2.redo()
+        h2.toList() shouldBe listOf("c", "d", "e")
+        h2.current shouldBe "e"
+    }
 })
